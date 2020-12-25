@@ -22,6 +22,18 @@ const styles = StyleSheet.create({
     color: '#e7d629',
     fontWeight: '600',
   },
+
+  langButton: {
+    color: 'red',
+    top:0,
+    bottom: 0,
+    right: 0,
+    paddingRight: 10,
+    paddingLeft: 10,
+    justifyContent:'center',
+    backgroundColor: '#DDDDDD',
+    position: 'absolute',
+  },
 });
 
 export default styles;

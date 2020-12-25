@@ -8,8 +8,6 @@
 
   "constants": {
     "activeTodoScreen": {
-      "title": "My Todo List!",
-      "addTodoPlaceholder": "Type a todo, then hit enter!",
       "addTodoInputMaxlength": 25,
       "addTodoInputClearTextOnFocus": true
     },

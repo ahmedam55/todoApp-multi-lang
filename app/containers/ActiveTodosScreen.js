@@ -3,6 +3,7 @@ import { FlatList, View, Dimensions, SafeAreaView } from 'react-native';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 
 import SwipeView from 'react-native-swipeview';
+import { useTranslation } from 'react-i18next';
 
 import config from '../config';
 
@@ -20,6 +21,8 @@ Icon.loadFont();
 
 const ActiveTodosScreen = () => {
   const [todos, setTodos] = useState([]);
+
+  const { t } = useTranslation();
 
   const addTodo = useCallback((text) => {
     setTodos((todos) => [...todos, new Todo({ text })]);
@@ -51,11 +54,11 @@ const ActiveTodosScreen = () => {
   return (
     <SafeAreaView style={commonStyles.topContainer}>
       <View style={commonStyles.container}>
-        <Title title={config.constants.activeTodoScreen.title} />
+        <Title title={t('title')} />
         <View style={styles.header}>
           <View style={styles.inputContainer}>
             <Input
-              placeholder={config.constants.activeTodoScreen.addTodoPlaceholder}
+              placeholder={t('addTodoPlaceholder')}
               placeholderTextColor={config.colors.white}
               selectionColor={config.colors.golden}
               underlineColorAndroid={config.colors.transparent}
