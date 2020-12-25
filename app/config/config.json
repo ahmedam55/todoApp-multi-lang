@@ -1,0 +1,28 @@
+{
+  "colors": {
+    "golden": "#e7d629",
+    "white": "#ffffff",
+    "transparent": "transparent",
+    "dim_gray": "#313842"
+  },
+
+  "constants": {
+    "activeTodoScreen": {
+      "title": "My Todo List!",
+      "addTodoPlaceholder": "Type a todo, then hit enter!",
+      "addTodoInputMaxlength": 25,
+      "addTodoInputClearTextOnFocus": true
+    },
+
+    "hiddenRowIconSize": 20,
+    "rowSwipeDuration": 200,
+    "rowSwipeOpenPercent": 40,
+    "rowTimelineIconSize": 6
+  },
+
+  "icons": {
+    "check": "check",
+    "times": "times",
+    "circle": "circle"
+  }
+}
