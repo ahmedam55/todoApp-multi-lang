@@ -1,4 +1,4 @@
-import { StyleSheet, Dimensions } from 'react-native';
+import { StyleSheet, Dimensions, I18nManager } from 'react-native';
 
 const styles = StyleSheet.create({
   input: {
@@ -8,6 +8,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     borderRadius: 3,
     width: Dimensions.get('window').width * 0.7,
+    textAlign :  I18nManager.isRTL ? 'right' : 'left',
   },
 })
 

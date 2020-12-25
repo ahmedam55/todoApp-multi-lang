@@ -19,6 +19,26 @@ import commonStyles from './styles';
 
 Icon.loadFont();
 
+const LeftSwipingView = () => (
+  <View style={commonStyles.rowLeft}>
+    <Icon
+      style={commonStyles.icon}
+      name={config.icons.check}
+      size={config.constants.hiddenRowIconSize}
+    />
+  </View>
+);
+
+const RightSwipingView = () => (
+  <View style={commonStyles.rowRight}>
+    <Icon
+      style={commonStyles.icon}
+      name={config.icons.times}
+      size={config.constants.hiddenRowIconSize}
+    />
+  </View>
+);
+
 const ActiveTodosScreen = () => {
   const [todos, setTodos] = useState([]);
 
@@ -83,24 +103,8 @@ const ActiveTodosScreen = () => {
               renderVisibleContent={() => (
                 <TodoRowItem todo={{ ...item }} index={index} />
               )}
-              renderLeftView={() => (
-                <View style={commonStyles.rowLeft}>
-                  <Icon
-                    style={commonStyles.icon}
-                    name={config.icons.check}
-                    size={config.constants.hiddenRowIconSize}
-                  />
-                </View>
-              )}
-              renderRightView={() => (
-                <View style={commonStyles.rowRight}>
-                  <Icon
-                    style={commonStyles.icon}
-                    name={config.icons.times}
-                    size={config.constants.hiddenRowIconSize}
-                  />
-                </View>
-              )}
+              renderLeftView={LeftSwipingView}
+              renderRightView={RightSwipingView}
               leftOpenValue={leftOpenValue}
               rightOpenValue={rightOpenValue}
               swipeDuration={config.constants.rowSwipeDuration}

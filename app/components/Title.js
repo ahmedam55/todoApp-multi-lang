@@ -2,23 +2,13 @@ import React, { memo, useMemo } from 'react';
 import { View, Text, TouchableOpacity, I18nManager } from 'react-native';
 
 import { useTranslation } from 'react-i18next';
-import RNRestart from 'react-native-restart'
 
-import i18n from '../helpers/i18n';
+import { toggleLanguage } from '../helpers/i18n';
 
 import styles from './styles/TitleStyles';
 
 const capitalize = (s = '') => {
   return s.charAt(0).toUpperCase() + s.slice(1);
-};
-
-const toggleLanguage = () => {
-  const isAr = i18n.language === 'ar';
-
-  i18n.changeLanguage(!isAr ? 'ar' : 'en').then(() => {
-    I18nManager.forceRTL(!isAr);
-    RNRestart.Restart()
-  });
 };
 
 const Title = memo(({ title }) => {
