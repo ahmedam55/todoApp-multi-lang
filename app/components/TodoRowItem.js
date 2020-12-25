@@ -3,8 +3,10 @@ import { View, Text } from 'react-native';
 
 import config from '../config';
 
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import styles from './styles/TodoRowItemStyles';
+
+Icon.loadFont();
 
 const TodoRowItem = memo(({ todo }) => {
   const { text, completed } = todo;

@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { FlatList, View, Dimensions, SafeAreaView } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/dist/FontAwesome';
 
 import SwipeView from 'react-native-swipeview';
 
@@ -15,6 +15,8 @@ import Todo from '../models/Todo';
 
 import styles from './styles/ActiveTodosStyles';
 import commonStyles from './styles';
+
+Icon.loadFont();
 
 const ActiveTodosScreen = () => {
   const [todos, setTodos] = useState([]);
