@@ -1,9 +1,10 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { FlatList, View, Dimensions, SafeAreaView } from 'react-native';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 
 import SwipeView from 'react-native-swipeview';
 import { useTranslation } from 'react-i18next';
+import { gql, useMutation, useQuery } from '@apollo/client';
 
 import config from '../config';
 
@@ -39,33 +40,85 @@ const RightSwipingView = () => (
   </View>
 );
 
+const TODOS_QUERY = gql`
+  query todos {
+    getTodos {
+      id
+      body
+      created
+    }
+  }
+`;
+
+const ADD_TODO = gql`
+  mutation createTodo($text: String!) {
+    createTodo(body: $text) {
+      id
+      body
+      created
+    }
+  }
+`;
+
+const DELETE_TODO = gql`
+  mutation deleteTodo($id: ID!) {
+    deleteTodo(todoId: $id)
+  }
+`;
+
 const ActiveTodosScreen = () => {
-  const [todos, setTodos] = useState([]);
+  const { data, loading, client } = useQuery(TODOS_QUERY);
+  const [createTodo] = useMutation(ADD_TODO, {
+    refetchQueries: [{ query: TODOS_QUERY }],
+  });
+
+  const [removeTodo] = useMutation(DELETE_TODO);
 
   const { t } = useTranslation();
 
-  const addTodo = useCallback((text) => {
-    setTodos((todos) => [...todos, new Todo({ text })]);
-  }, []);
+  const todos = useMemo(() => {
+    return data.getTodos != null
+      ? data.getTodos.map((todo) => ({
+          ...todo,
+          text: todo.body,
+        }))
+      : [];
+  }, [data]);
+
+  const addTodo = useCallback(
+    (text) => {
+      createTodo({ variables: { text: text } });
+    },
+    [createTodo],
+  );
 
   //toggle complete
   const completeTodo = useCallback((indexToComplete) => {
-    setTodos((todos) =>
-      todos.map((todo, index) => {
-        return indexToComplete === index
-          ? {
-              ...todo,
-              completed: !todo.completed,
-            }
-          : todo;
-      }),
-    );
+    // setTodos((todos) =>
+    //   todos.map((todo, index) => {
+    //     return indexToComplete === index
+    //       ? {
+    //           ...todo,
+    //           completed: !todo.completed,
+    //         }
+    //       : todo;
+    //   }),
+    // );
   }, []);
 
-  const deleteActiveTodo = useCallback((index) => {
-    setTodos((todos) => todos.filter((todo, i) => index !== i));
-    //Another way, of deleting an item in an immutable way, is cloning the original array, then call splice (mutate the cloned array) and return it
-  }, []);
+  const deleteActiveTodo = useCallback(
+    (id) => {
+      client.writeQuery({
+        query: TODOS_QUERY,
+        data: {
+          getTodos: data.getTodos.filter((todo) => todo.id !== id),
+        },
+      });
+
+      removeTodo({ variables: { id: id } });
+    },
+    [client, data, removeTodo],
+  );
 
   const windowWidth = Dimensions.get('window').width;
   const leftOpenValue = windowWidth;
@@ -109,7 +162,7 @@ const ActiveTodosScreen = () => {
               rightOpenValue={rightOpenValue}
               swipeDuration={config.constants.rowSwipeDuration}
               swipeToOpenPercent={config.constants.rowSwipeOpenPercent}
-              onSwipedLeft={() => deleteActiveTodo(index)}
+              onSwipedLeft={() => deleteActiveTodo(item.id)}
               onSwipedRight={() => {
                 completeTodo(index);
               }}
